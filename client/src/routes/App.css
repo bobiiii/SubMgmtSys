@@ -1,0 +1,37 @@
+.bg-cs{
+    background-color: rgb(255, 255, 255);
+}
+.bg-inner-cs{
+    background-color: rgba(65, 64, 63, 0.904);
+}
+.forinner{
+    width: 70%;
+    margin: auto;
+    
+}
+a{
+    all: unset;
+}
+.main-cs{
+    height: 100vh;
+    
+}
+.header-cs{
+    background: linear-gradient(336deg, rgb(220, 204, 248) 2%, rgb(22, 22, 146) 10%, rgba(0,212,255,1) 70%);  
+}
+.login-cs{
+    height: 1000%;
+    display: flex;
+    align-items: center;
+    
+    background: linear-gradient(336deg, rgb(44, 8, 110) 10%, rgb(22, 22, 146) 16%, rgba(0,212,255,1) 88%);
+
+    background-color: rgb(227, 237, 241);
+}
+.svc-cards-cs{
+    text-align: center;
+}
+.tabs-cs{
+    justify-content:center;
+    
+}
