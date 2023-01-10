@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Tabs, Tab, Col, Row, Container } from "react-bootstrap";
-
+import { Link, useNavigate } from "react-router-dom";
 export function Login() {
   const [key, setKey] = useState();
 
@@ -22,11 +22,21 @@ export function Login() {
 }
 
 export function LoginTab() {
+  //State variable
   const [loginPhone, setLoginPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
   
-  async function handleSubmit() {
-    await fetch("http://localhost:3000/api",{
+
+  //Navigation Hook
+  const navigate = useNavigate()
+
+
+  
+
+   async function handleLogin(e) {
+    
+    console.log("btn workng")
+   await fetch("http://localhost:3000/login",{
       method: "POST",
       mode: "cors",
       cache: "no-cache",
@@ -36,20 +46,56 @@ export function LoginTab() {
       },
       body: JSON.stringify({
         phone : loginPhone,
-        password: password,
+        password: loginPassword,
     }),
   }
-  )
-  console.log(loginPhone)
-  console.log(password+"handle submit works")
+  ).then(res => loginAuth(res))
+
+//function to navigate user if User Exist
+  async function loginAuth(res){
+    //getting res as object
+    //console.log(res)
+//getting data as json received from server
+    // const data = await res.text()
+    // console.log(data)
+    if (res.status === "OK") {
+      navigate("/dashboard")
+    } else {
+      navigate("/login")
+     console.log("Not Reg User from Client " + res.status)
+     setLoginPhone("")
+     setLoginPassword("")
+    }
+  }
+
+  //  function loginSuccess(data){
+    // await fetch("http://localhost:3000/login").then(async(res)=>{
+    //   const result= await res.text()
+    //   console.log(`abc func ${result}`)
+    //   navigate("/dashboard")
+    // })
+    // console.log(data)
+
+    
+  // }
+
+
 }
+
+  // function ano(){
+  //   console.log("abc")
+  // }
+
+
+  
+
   return (
     <Container className=" login-cs w-75 rounded-4 mt-3  p-5 ">
-      <Form onSubmit={handleSubmit} className="w-75 mx-auto">
+      <Form  className="w-75 mx-auto">
         <Form.Group className="mb-3" controlId="loginPhone">
           <Form.Label>Phone Number</Form.Label>
           <Form.Control
-            value={loginPhone}
+            value={loginPhone }
             onChange={(e) => {
               setLoginPhone(e.target.value);
             }}
@@ -65,9 +111,9 @@ export function LoginTab() {
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
-            value={password}
+            value={loginPassword }
             onChange={(e) => {
-              setPassword(e.target.value);
+              setLoginPassword(e.target.value);
             }}
             name="pass"
             type="password"
@@ -77,7 +123,7 @@ export function LoginTab() {
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
         </Form.Group>
-        <Button className=" w-100" lg={"w-50"} variant="primary" type="submit">
+        <Button as={Link} onClick={handleLogin} className=" w-100" lg={"w-50"} variant="primary" type="submit">
           Submit
         </Button>
       </Form>
@@ -86,34 +132,58 @@ export function LoginTab() {
 }
 
 export function SignUp() {
+  
+  const [fname,setFname] =useState("")
+  const [lname,setLname] =useState("")
+  const [phone,setPhone] =useState()
+  const [password,setPassword] =useState("")
+  
+  
+  function handleSignup(e){
+    e.preventDefault()
+    fetch("http://localhost:3000/login",{
+      method: "POST",
+      mode: "cors",
+      cache: "default",
+      credentials: "same-origin",
+      headers:{
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        fname,
+        lname,
+        phone,
+        password,
+    })
+  })}
   return (
     <Container className=" login-cs w-75 rounded-4 mt-3  p-5 ">
-      <Form className=" mx-auto">
+      <Form onSubmit={handleSignup} className=" mx-auto">
         <Row className="mb-3">
           <Form.Group as={Col} controlId="SignupFName">
             <Form.Label>First Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter First Name" />
+            <Form.Control value={fname || ""} onChange={e => setFname(e.target.value)}  type="text" placeholder="Enter First Name" />
           </Form.Group>
 
           <Form.Group as={Col} controlId="SignupLName">
-            <Form.Label>First Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Last Name" />
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control value={lname || ""} onChange={e => setLname(e.target.value)}  type="text" placeholder="Enter Last Name" />
           </Form.Group>
         </Row>
 
         <Form.Group className="mb-3" controlId="SignupNumber">
           <Form.Label>Phone Number</Form.Label>
-          <Form.Control type="number" placeholder="Enter Phone Number" />
+          <Form.Control value={phone || ""} onChange={e => setPhone(e.target.value)} type="number" placeholder="Enter Phone Number" />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="SignupPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" />
+          <Form.Control value={password || ""} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password" />
         </Form.Group>
 
-        <Form.Group className="mb-3" id="formGridCheckbox">
+        {/* <Form.Group className="mb-3" id="formGridCheckbox">
           <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
+        </Form.Group> */}
 
         <Row className="mb-3">
           <Button variant="primary" type="submit">
