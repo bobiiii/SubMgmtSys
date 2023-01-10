@@ -58,7 +58,7 @@ export function LoginTab() {
 //getting data as json received from server
     // const data = await res.text()
     // console.log(data)
-    if (res.status === "OK") {
+    if (res.statusText === "OK") {
       navigate("/dashboard")
     } else {
       navigate("/login")
