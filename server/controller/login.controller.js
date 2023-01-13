@@ -18,12 +18,12 @@ export const loginAuth= (req, res)=>{
 
 
 
-export const signupAuth= (req,res)=>{
-  console.log("sign cntrlr works")
-  res.send("wroking from server")
+// export const signupAuth= (req,res)=>{
+//   console.log("sign cntrlr works")
+//   res.send("wroking from server")
 
 
-}
+// }
 
 
 // (req,res)=>{

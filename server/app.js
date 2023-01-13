@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import {DB} from "./dummyDB/DB.js"
 import login_routes from "./routes/login.js";
+import signup_routes from "./routes/signup.js";
 
 
 const app = express();
@@ -22,14 +23,15 @@ app.use(
 app.use(cors());
 
 app.use("/login", login_routes)
+app.use("/signup", signup_routes)
 
 app.get("/", (req, res) => {
   res.send("res from server");
  });
 
-app.post("/signup",(req,res)=>{
-  console.log("signup")
-  })
+// app.post("/signup",(req,res)=>{
+//   console.log("signup")
+//   })
 
 app.listen(port, () => {
   console.log(`Server is running on localhost:${port}`);
