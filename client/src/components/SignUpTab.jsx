@@ -2,26 +2,29 @@ import { useState, useEffect } from "react";
 
 import { Form, Button,  Col, Row, Container } from "react-bootstrap";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-
+import SignUpRedirect from "./SignUpRedirect"
 
 export function SignUpTab() {
   const navigate =useNavigate()
+  console.log("runs")
 
     const [fname, setFname] = useState("")
     const [lname, setLname] = useState("")
     const [phone, setPhone] = useState()
     const [password, setPassword] = useState("")
+    const [redirect, setRedirect] = useState(false)
   
-  useEffect(() => {
+
     
     async function  handleSignup(e) {
-        e.preventDefault()
-         await fetch("http://localhost:3000/signup", {
+         e.preventDefault()
+         const url=  "http://localhost:3000/signup"
+         const methods= {
           method: "POST",
           mode: "cors",
           cache: "default",
           credentials: "same-origin",
-          headers: {
+          headers: { 
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -30,19 +33,29 @@ export function SignUpTab() {
             phone,
             password,
           })
-        }).then(async(res)=>
-          {
-            const data= await res.text() 
-            console.log(data)
-            console.log(res)  
-          if (res.statusText === "OK") {
-            navigate("/login")
-          }
-          })
+        }
+         const addUser = await fetch(url, methods )
+         const result = await addUser.text()
+        console.log(result)
+         if (addUser.statusText === "OK") {
+          setRedirect(true)
+          // setTimeout(() => {
+            
+          //   navigate("/login")
+          // }, 3000);
+        }
+
+        //  const userAdded = await addUser.then(async(res)=>
+        //   {
+        //     const data= await res.text() 
+        //     console.log(data)
+        //     console.log(res)  
+         
+        //   })
         
       }
     
-  }, [handleSignup])
+  
   
     // async function  handleSignup(e) {
     //   e.preventDefault()
@@ -74,7 +87,8 @@ export function SignUpTab() {
       
     // }
 
-    return (
+    return (<>
+    {redirect ? <SignUpRedirect/> : undefined}
       <Container className=" login-cs w-75 rounded-4 mt-3  p-5 ">
         <Form onSubmit={handleSignup} className=" mx-auto">
           <Row className="mb-3">
@@ -110,6 +124,7 @@ export function SignUpTab() {
           </Row>
         </Form>
       </Container>
+      </>
     );
   }
   
