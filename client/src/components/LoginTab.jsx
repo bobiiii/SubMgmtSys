@@ -18,7 +18,7 @@ export function LoginTab() {
     async function handleLogin(e) {
   
       console.log("btn workng")
-      await fetch("http://localhost:3000/login", {
+      await fetch("https://comfortable-gold-belt.cyclic.app/login", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -35,12 +35,13 @@ export function LoginTab() {
   
       //function to navigate user if User Exist
       async function loginAuth(res) {
-        //getting res as object
-        //console.log(res)
+        // getting res as object
+        
         //getting data as json received from server
-        // const data = await res.text()
-        // console.log(data)
-        if (res.statusText === "OK") {
+        const data = await res.text()
+        
+        if (res.ok) {
+          console.log("if works")
           navigate("/dashboard")
         } else {
           navigate("/login")
