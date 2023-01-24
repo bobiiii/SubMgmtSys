@@ -1,44 +1,47 @@
-import { DB } from "../dummyDB/DB.js";
-
+import { Users } from "../DbMongo/DbConnect.js";
 
 export const loginAuth= (req, res)=>{
-  console.log("login auth from lgin-cntrlr works")
-    const phone = req.body.phone
-  const password = req.body.password
-  const phoneExist= DB.find(db => db.phone === phone && db.password === password)
-  if (phoneExist) {
-    res.send("Success, Registered User")
-  } else {
     
-    res.status(400).send(" Server::REjected, Non-Reg User")
-    console.log(DB)
+  const phone = req.body.phone
+    const password = req.body.password
+    Users.findOne({phone : phone  },(err, user)=>{
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      }
+      if (!user) {
+        return res.status(404).send( "User Not found." );
+      }
+
+
+      if (user.phone == phone) {
+        if (user.password === password) {
+       return  res.status(200).send("Login Success")
+        }else  {
+          return  res.status(403).send("username or password is incorrect")
+         
+        }
+        
+      }
+      
+
+      // if (err){
+      //   res.status(500).send("error in user find func")
+      // }
+      // if (!user){
+      //   res.status(403).send("user not exists user find func")
+      // }
+      // if (user){
+      //   res.status(200).send("user exists  userfind ")
+      // }
+    })
+  // if (userExist) {
+  //   console.log(userExist)
+  //   res.send("Success, Registered User")
+  // } else {
+  //   res.status(403).send(" Server::REjected, Non-Reg User")
     
-  }
+    
+  // }
 }
 
-
-
-// export const signupAuth= (req,res)=>{
-//   console.log("sign cntrlr works")
-//   res.send("wroking from server")
-
-
-// }
-
-
-// (req,res)=>{
-//   console.log("router post works")
-//   const phone = req.body.phone
-//     const password = req.body.password
-    
-    
-//     const phoneExist= DB.find(db => db.phone === phone && db.password === password)
-//     if (phoneExist) {
-//       res.send("Success, Registered User")
-//     } else {
-      
-//       res.status(400).send(" Server::REjected, Non-Reg User")
-//       console.log(DB)
-      
-//     }
-// }

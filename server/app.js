@@ -5,7 +5,8 @@ import cors from "cors";
 import {DB} from "./dummyDB/DB.js"
 import login_routes from "./routes/login.js";
 import signup_routes from "./routes/signup.js";
-
+import mongoose from "mongoose"
+import {dbconnect} from "./DbMongo/DbConnect.js"
 
 const app = express();
 const port = 3000;
@@ -21,6 +22,15 @@ app.use(
   })
 );
 app.use(cors());
+
+//DataBase
+
+
+
+dbconnect()
+
+
+// Express code
 
 app.use("/login", login_routes)
 app.use("/signup", signup_routes)

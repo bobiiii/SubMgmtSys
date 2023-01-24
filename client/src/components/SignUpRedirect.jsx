@@ -1,9 +1,18 @@
 import React from 'react'
 
-function SignUpRedirect() {
+export function SignUpRedirect() {
   return (
-    <div><h1>Success! Please Wait</h1></div>
+    <div className="d-flex justify-content-center  text-danger pt-2">
+      <h5>Success! Please Wait</h5></div>
   )
 }
 
-export default SignUpRedirect
+
+export function SignUpUserExists() {
+  return (
+    <div className="d-flex justify-content-center  text-danger pt-2">
+      <h5>Phone already exists, Please Login</h5></div>
+  )
+}
+
+

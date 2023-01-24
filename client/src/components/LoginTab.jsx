@@ -1,81 +1,74 @@
 import { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import LoginWrong, {LoginUserNotExist} from "./LoginWrong"
 
 
 export function LoginTab() {
     //State variable
     const [loginPhone, setLoginPhone] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
-  
+    const [loginWrongMsg, setLoginWrongMsg] = useState(false);
+    const [userNotExist, setUserNotExist] = useState(false);
   
     //Navigation Hook
     const navigate = useNavigate()
   
-  
-  
-  
+    // https://comfortable-gold-belt.cyclic.app/login
+  // http://localhost:3000/login
+      
     async function handleLogin(e) {
-  
-      console.log("btn workng")
-      await fetch("https://comfortable-gold-belt.cyclic.app/login", {
+      e.preventDefault()
+      const url = "http://localhost:3000/login"
+      const method= {
         method: "POST",
-        mode: "cors",
-        cache: "no-cache",
-        credentials: "same-origin",
+        mode:"cors",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           phone: loginPhone,
           password: loginPassword,
-        }),
+        })
       }
-      ).then(res => loginAuth(res))
-  
-      //function to navigate user if User Exist
-      async function loginAuth(res) {
-        // getting res as object
+      const res = await fetch(url,method )
+      if (res.ok) {
+        navigate("/dashboard")
+      }else if(res.status === 403){
+        navigate("/login")
         
-        //getting data as json received from server
-        const data = await res.text()
+        setUserNotExist(false)
+        setLoginWrongMsg(true)
+        setLoginPhone("")
+        setLoginPassword("")
+      } else if(res.status === 404){
+
+        navigate("/login")
+        setUserNotExist(true)
+        setLoginWrongMsg(false)
+        setLoginPhone("")
+        setLoginPassword("")
         
-        if (res.ok) {
-          console.log("if works")
-          navigate("/dashboard")
-        } else {
-          navigate("/login")
-          console.log("Not Reg User from Client " + res.status)
-          setLoginPhone("")
-          setLoginPassword("")
-        }
       }
-  
-      //  function loginSuccess(data){
-      // await fetch("http://localhost:3000/login").then(async(res)=>{
-      //   const result= await res.text()
-      //   console.log(`abc func ${result}`)
-      //   navigate("/dashboard")
-      // })
-      // console.log(data)
-  
-  
-      // }
-  
-  
+      else
+      
+      {
+        navigate("/login")
+        setUserNotExist(true)
+        setLoginWrongMsg(false)
+        setLoginPhone("")
+        setLoginPassword("")
+        
+      }
+      
     }
-  
-    // function ano(){
-    //   console.log("abc")
-    // }
-  
-  
-  
-  
-    return (
-      <Container className=" login-cs w-75 rounded-4 mt-3  p-5 ">
-        <Form className="w-75 mx-auto">
-          <Form.Group className="mb-3" controlId="loginPhone">
+    return (<>
+    {userNotExist ? < LoginUserNotExist/> : undefined}
+    {loginWrongMsg ? < LoginWrong/> : undefined}
+    
+      <Container className=" login-cs w-100 rounded-4 mt-3  p-5 ">
+        <Form onSubmit={handleLogin}  className="w-75 mx-auto">
+          <Form.Group className="mb-3 " controlId="loginPhone">
             <Form.Label>Phone Number</Form.Label>
             <Form.Control
               value={loginPhone}
@@ -85,9 +78,11 @@ export function LoginTab() {
               name="phone"
               type="number"
               placeholder="Enter Phone Number"
+              required
+              
             />
             <Form.Text className="text-muted">
-              You have to enter your number to Log-In
+              Ex: 03060125220
             </Form.Text>
           </Form.Group>
   
@@ -101,16 +96,18 @@ export function LoginTab() {
               name="pass"
               type="password"
               placeholder="Password"
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Check me out" />
           </Form.Group>
-          <Button as={Link} onClick={handleLogin} className=" w-100" lg={"w-50"} variant="primary" type="submit">
+          <Button    className=" w-100" lg={"w-50"} variant="primary" type="submit">
             Submit
           </Button>
         </Form>
       </Container>
+      </>
     );
   }
   

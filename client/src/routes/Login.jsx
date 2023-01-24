@@ -12,15 +12,15 @@ export function Login() {
       // id="controlled-tab-example"
       activeKey={key}
       onSelect={(k) => setKey(k)}
-      className="tabs-cs w-50 mx-auto"
+      className="tabs-cs w-75 mx-auto"
     >
     
-      <Tab className="w-" eventKey="login" title="Login">
+      <Tab className="w-100" eventKey="login" title="Login">
         <LoginTab />
       </Tab>
       
     
-      <Tab tabAttrs={{href:"/abcde"}}  eventKey="SignUp" title="SignUp">
+      <Tab   eventKey="SignUp" title="SignUp">
 
         <SignUpTab />
 
