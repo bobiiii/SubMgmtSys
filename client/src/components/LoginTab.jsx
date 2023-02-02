@@ -19,7 +19,7 @@ export function LoginTab() {
       
     async function handleLogin(e) {
       e.preventDefault()
-      const url = "http://localhost:3000/login"
+      const url = "https://comfortable-gold-belt.cyclic.app/login"
       const method= {
         method: "POST",
         mode:"cors",

@@ -19,6 +19,7 @@ export function SignUpTab() {
 
 //https://comfortable-gold-belt.cyclic.app/signup
 // http://localhost:3000/signup
+//fetching data
   async function handleSignup(e) {
     e.preventDefault()
     const form = e.currentTarget;
@@ -28,7 +29,7 @@ export function SignUpTab() {
     }
     setValidated(true);
 
-    const url = "http://localhost:3000/signup"
+    const url = "https://comfortable-gold-belt.cyclic.app/signup"
     const methods = {
       method: "POST",
       mode: "cors",
