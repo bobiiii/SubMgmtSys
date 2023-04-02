@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const mongoURI = `mongodb+srv://babersdn:276233@submgmtsys.nkuwkl3.mongodb.net/test`
+const mongoURI = `mongodb+srv://babersdn:12345@submgmtsys.nkuwkl3.mongodb.net/test`
 
 export const dbconnect = ()=>{mongoose.connect(mongoURI,{
     useNewUrlParser : true,
